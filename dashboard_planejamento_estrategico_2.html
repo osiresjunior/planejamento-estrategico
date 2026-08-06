@@ -154,7 +154,7 @@
 
   /* ACOES TABLE */
   .table-scroll{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:var(--radius);}
-  table.acoes{width:100%;min-width:640px;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+  table.acoes{width:100%;min-width:820px;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
   table.acoes th{
     text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:0.05em;
     color:var(--text-faint);font-weight:600;padding:12px 16px;background:var(--bg-2);
@@ -1401,6 +1401,20 @@ function statusOf(acao){
 const STATUS_LABEL = {concluida:'Concluída', andamento:'Em andamento', atrasada:'Atrasada'};
 const STATUS_COLOR = {concluida:'var(--green)', andamento:'var(--amber)', atrasada:'var(--red)'};
 
+const FUNCIONARIOS = {
+  17: 'Carlos Eduardo de Souza Farias',
+  197: 'Thiago Franco Santana',
+  199: 'Andreya de Fátima Bueno',
+  277: 'Clóvis Eduardo Fernandes Carneiro',
+  383: 'Rafael Alves Cruvinel',
+  392: 'Wellington de Souza Moura',
+  468: 'Rinaldo Maciel Monteiro Junior',
+  1173: 'Osires Alves de Oliveira Junior'
+};
+function nomeResponsavel(cod){
+  return cod != null && FUNCIONARIOS[cod] ? FUNCIONARIOS[cod] : null;
+}
+
 function pctColor(pct){
   if(pct === null) return 'var(--gray)';
   if(pct < 40) return 'var(--red)';
@@ -1568,7 +1582,7 @@ function openObjetivo(codRaw){
   document.getElementById('objetivo-head').innerHTML = `
     <div>
       <h2>${obj.TITULO}</h2>
-      <div class="meta">${stats.iniciativasTotal} iniciativas · ${stats.totalAcoes} ações · ${stats.concluidas} concluídas</div>
+      <div class="meta">${stats.iniciativasTotal} iniciativas · ${stats.totalAcoes} ações · ${stats.concluidas} concluídas${nomeResponsavel(obj.CODFUNCRESPONSAVEL) ? ' · Responsável: '+nomeResponsavel(obj.CODFUNCRESPONSAVEL) : ''}</div>
     </div>
     <div class="gauge-wrap">
       ${gaugeSVG(stats.pct, 96)}
@@ -1619,7 +1633,7 @@ function openIniciativa(iniId){
   document.getElementById('iniciativa-head').innerHTML = `
     <div>
       <h2>${ini.TITULO}</h2>
-      <div class="meta">${ini.DESCRICAO && ini.DESCRICAO !== ini.TITULO ? ini.DESCRICAO+' · ' : ''}Ano ${ini.ANO || '—'}</div>
+      <div class="meta">${ini.DESCRICAO && ini.DESCRICAO !== ini.TITULO ? ini.DESCRICAO+' · ' : ''}Ano ${ini.ANO || '—'}${nomeResponsavel(ini.CODFUNCRESPONSAVEL) ? ' · Responsável: '+nomeResponsavel(ini.CODFUNCRESPONSAVEL) : ''}</div>
     </div>
     <div class="gauge-wrap">
       ${gaugeSVG(s.pct, 96)}
@@ -1644,13 +1658,14 @@ function openIniciativa(iniId){
   <table class="acoes">
     <thead>
       <tr>
-        <th style="width:34%">Ação</th>
+        <th style="width:30%">Ação</th>
         <th>Status</th>
         <th>Prioridade</th>
         <th>Início</th>
         <th>Previsão</th>
         <th>Conclusão</th>
         <th>Custo</th>
+        <th>Responsável</th>
       </tr>
     </thead>
     <tbody>
@@ -1665,6 +1680,7 @@ function openIniciativa(iniId){
           <td class="mono">${fmtDate(a.PREVISAO)}</td>
           <td class="mono">${fmtDate(a.CONCLUSAO)}</td>
           <td class="mono">${fmtMoney(a.CUSTO)}</td>
+          <td>${nomeResponsavel(a.CODFUNCRESPONSAVEL) || '—'}</td>
         </tr>`;
       }).join('')}
     </tbody>
