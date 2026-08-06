@@ -1604,7 +1604,7 @@ function openObjetivo(codRaw){
     const s = iniciativaStats(ini.CODINICIATIVAESTRATEGICA);
     const pctDisplay = s.pct === null ? '—' : s.pct + '%';
     const barColor = pctColor(s.pct);
-    const subLabel = s.total ? `${s.concluidas}/${s.total} ações concluídas${s.atrasadas?` · ${s.atrasadas} atrasada${s.atrasadas===1?'':'s'}`:''}` : 'Nenhuma ação cadastrada';
+    const subLabel = (s.total ? `${s.concluidas}/${s.total} ações concluídas${s.atrasadas?` · ${s.atrasadas} atrasada${s.atrasadas===1?'':'s'}`:''}` : 'Nenhuma ação cadastrada') + (nomeResponsavel(ini.CODFUNCRESPONSAVEL) ? ` · ${nomeResponsavel(ini.CODFUNCRESPONSAVEL)}` : '');
     return `
     <div class="row-card" onclick="openIniciativa(${ini.CODINICIATIVAESTRATEGICA})">
       <div class="row-idx">#${String(ini.CODINICIATIVAESTRATEGICA).padStart(3,'0')}</div>
